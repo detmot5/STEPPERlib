@@ -6,32 +6,82 @@
 #ifndef STEPPERLIB_STEPPER_H_
 #define STEPPERLIB_STEPPER_H_
 
-#define STEPS_PER_REV    		32  // Depends on choosed stepper motor
-#define GEAR_RED				64  // if none, type 1
-#define STEPS 	STEPS_PER_REV * GEAR_RED
+
 
 //--------------------------------------------------------------------------
-//						  LIBRARY CONFIG
+//						  	LIBRARY CONFIG
 //--------------------------------------------------------------------------
 #define STEPPER_ENABLE     		1
 
-#define STEPPER_QUANTITY 		4   // Max 4
+#define STEPPER_QUANTITY 		4   		// Max 4
 
-
+#define STEPS_PER_REV    		32  		// Depends on choosed stepper motor
+#define GEAR_RED				64 			// if none, type 1
+#define FULL_REV	STEPS_PER_REV * GEAR_RED
+#define PI 					FULL_REV/2
 //--------------------------------------------------------------------------
 //						    PIN/PORT SETTINGS
 //--------------------------------------------------------------------------
-#define STEPPER_1_PORT 			A
-#define STEPPER_1_PIN			0
 
-#define STEPPER_2_PORT 			A
-#define STEPPER_2_PIN 			1
+// 		1st STEPPER
+#if STEPPER_QUANTITY >= 1
+#define STEPPER1_PORT1 			A
+#define STEPPER1_PIN1			0
 
-#define STEPPER_3_PORT 			A
-#define STEPPER_3_PIN 			2
+#define STEPPER1_PORT2 			A
+#define STEPPER1_PIN2 			1
 
-#define STEPPER_4_PORT			A
-#define STEPPER_4_PIN			3
+#define STEPPER1_PORT3 			A
+#define STEPPER1_PIN3 			2
+
+#define STEPPER1_PORT4			A
+#define STEPPER1_PIN4			3
+#endif
+
+
+#if STEPPER_QUANTITY >= 2
+#define STEPPER2_PORT1 			A
+#define STEPPER2_PIN1			4
+
+#define STEPPER2_PORT2 			A
+#define STEPPER2_PIN2			5
+
+#define STEPPER2_PORT3 			A
+#define STEPPER2_PIN3 			6
+
+#define STEPPER2_PORT4			A
+#define STEPPER2_PIN4			7
+#endif
+
+
+#if STEPPER_QUANTITY >= 3
+#define STEPPER3_PORT1 			C
+#define STEPPER3_PIN1			0
+
+#define STEPPER3_PORT2 			C
+#define STEPPER3_PIN2			1
+
+#define STEPPER3_PORT3 			C
+#define STEPPER3_PIN3 			2
+
+#define STEPPER3_PORT4			C
+#define STEPPER3_PIN4			3
+#endif
+
+
+#if STEPPER_QUANTITY >= 4
+#define STEPPER4_PORT1 			C
+#define STEPPER4_PIN1			4
+
+#define STEPPER4_PORT2 			C
+#define STEPPER4_PIN2			5
+
+#define STEPPER4_PORT3 			C
+#define STEPPER4_PIN3 			6
+
+#define STEPPER4_PORT4			C
+#define STEPPER4_PIN4			7
+#endif
 
 //--------------------------------------------------------------------------
 // 					 SIMPLYFYING PORT ACCESS MACROS
@@ -48,12 +98,40 @@
 #define SDDR(x) (DDR##x)
 
 //--------------------------------------------------------------------------
-//						LOGIC STATE CHANGE MACROS
+//								STEPS MACROS
 //--------------------------------------------------------------------------
 
-#define  STEP1	PORT(STEPPER_1_PORT) |= (1<<STEPPER_1_PIN); PORT(STEPPER_1_PORT) &= ~(1<<STEPPER_1_PIN)
-#define  STEP2	PORT(STEPPER_2_PORT) |= (1<<STEPPER_2_PIN); PORT(STEPPER_2_PORT) &= ~(1<<STEPPER_2_PIN)
-#define  STEP3	PORT(STEPPER_3_PORT) |= (1<<STEPPER_3_PIN); PORT(STEPPER_3_PORT) &= ~(1<<STEPPER_3_PIN)
-#define  STEP4	PORT(STEPPER_4_PORT) |= (1<<STEPPER_3_PIN); PORT(STEPPER_3_PORT) &= ~(1<<STEPPER_4_PIN)
+#if STEPPER_QUANTITY >= 1
+#define  STEPPER1_STEP1	PORT(STEPPER1_PORT1) |= (1<<STEPPER1_PIN1); PORT(STEPPER1_PORT1) &= ~(1<<STEPPER1_PIN1)
+#define  STEPPER1_STEP2	PORT(STEPPER1_PORT2) |= (1<<STEPPER1_PIN2); PORT(STEPPER1_PORT2) &= ~(1<<STEPPER2_PIN2)
+#define  STEPPER1_STEP3	PORT(STEPPER1_PORT3) |= (1<<STEPPER1_PIN3); PORT(STEPPER1_PORT3) &= ~(1<<STEPPER3_PIN3)
+#define  STEPPER1_STEP4	PORT(STEPPER1_PORT4) |= (1<<STEPPER1_PIN4); PORT(STEPPER1_PORT4) &= ~(1<<STEPPER4_PIN4)
+#endif
+
+
+#if STEPPER_QUANTITY >= 2
+#define  STEPPER2_STEP1	PORT(STEPPER2_PORT1) |= (1<<STEPPER2_PIN1); PORT(STEPPER2_PORT1) &= ~(1<<STEPPER2_PIN1)
+#define  STEPPER2_STEP2	PORT(STEPPER2_PORT2) |= (1<<STEPPER2_PIN2); PORT(STEPPER2_PORT2) &= ~(1<<STEPPER2_PIN2)
+#define  STEPPER2_STEP3	PORT(STEPPER2_PORT3) |= (1<<STEPPER2_PIN3); PORT(STEPPER2_PORT3) &= ~(1<<STEPPER2_PIN3)
+#define  STEPPER2_STEP4	PORT(STEPPER2_PORT4) |= (1<<STEPPER2_PIN4); PORT(STEPPER2_PORT4) &= ~(1<<STEPPER2_PIN4)
+#endif
+
+
+#if STEPPER_QUANTITY >= 3
+#define  STEPPER3_STEP1	PORT(STEPPER3_PORT1) |= (1<<STEPPER3_PIN1); PORT(STEPPER3_PORT1) &= ~(1<<STEPPER3_PIN1)
+#define  STEPPER3_STEP2	PORT(STEPPER3_PORT2) |= (1<<STEPPER3_PIN2); PORT(STEPPER3_PORT2) &= ~(1<<STEPPER3_PIN2)
+#define  STEPPER3_STEP3	PORT(STEPPER3_PORT3) |= (1<<STEPPER3_PIN3); PORT(STEPPER3_PORT3) &= ~(1<<STEPPER3_PIN3)
+#define  STEPPER3_STEP4	PORT(STEPPER3_PORT4) |= (1<<STEPPER3_PIN4); PORT(STEPPER3_PORT4) &= ~(1<<STEPPER3_PIN4)
+#endif
+
+
+#if STEPPER_QUANTITY >= 4
+#define  STEPPER4_STEP1	PORT(STEPPER4_PORT1) |= (1<<STEPPER4_PIN1); PORT(STEPPER4_PORT1) &= ~(1<<STEPPER4_PIN1)
+#define  STEPPER4_STEP2	PORT(STEPPER4_PORT2) |= (1<<STEPPER4_PIN2); PORT(STEPPER4_PORT2) &= ~(1<<STEPPER4_PIN2)
+#define  STEPPER4_STEP3	PORT(STEPPER4_PORT3) |= (1<<STEPPER4_PIN3); PORT(STEPPER4_PORT3) &= ~(1<<STEPPER4_PIN3)
+#define  STEPPER4_STEP4	PORT(STEPPER4_PORT4) |= (1<<STEPPER4_PIN4); PORT(STEPPER4_PORT4) &= ~(1<<STEPPER4_PIN4)
+#endif
+
+
 
 #endif /* STEPPERLIB_STEPPER_H_ */
