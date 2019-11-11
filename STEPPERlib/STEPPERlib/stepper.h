@@ -132,6 +132,16 @@
 #define  STEPPER4_STEP4	PORT(STEPPER4_PORT4) |= (1<<STEPPER4_PIN4); PORT(STEPPER4_PORT4) &= ~(1<<STEPPER4_PIN4)
 #endif
 
+//--------------------------------------------------------------------------
+//						DECLARATIONS OF FUNCTIONS AND VARIABLES
+//--------------------------------------------------------------------------
+
+
+
+
+void stepperInit(void);
+void stepperWriteLeft(uint8_t stepper_number, uint8_t angle, uint8_t speed);
+void stepperWriteRight(uint8_t stepper_number, uint8_t angle, uint8_t speed);
 
 
 #endif /* STEPPERLIB_STEPPER_H_ */
