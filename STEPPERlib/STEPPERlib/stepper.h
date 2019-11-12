@@ -13,7 +13,7 @@
 //--------------------------------------------------------------------------
 #define STEPPER_ENABLE     		1
 
-#define STEPPER_QUANTITY 		3  		// Max 4
+#define STEPPER_QUANTITY 		4  		// Max 4
 
 #define STEPS_PER_REV    		32  		// Depends on choosed stepper motor
 #define GEAR_RED				64 			// if none, type 1
@@ -23,7 +23,7 @@
 //						    PIN/PORT SETTINGS
 //--------------------------------------------------------------------------
 
-// 		1st STEPPER
+
 #if STEPPER_QUANTITY >= 1
 #define STEPPER1_PORT1 			C
 #define STEPPER1_PIN1			2
@@ -140,8 +140,8 @@
 
 
 void stepperInit(void);
-void stepperGoLeft(uint8_t stepper_number, uint8_t angle, uint8_t speed);
-void stepperGoRight(uint8_t stepper_number, uint8_t angle, uint8_t speed);
+void stepperGoLeft(uint8_t stepper_number, uint16_t angle, uint16_t speed);
+void stepperGoRight(uint8_t stepper_number, uint16_t angle, uint16_t speed);
 
 
 #endif /* STEPPERLIB_STEPPER_H_ */

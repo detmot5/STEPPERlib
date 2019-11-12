@@ -10,6 +10,8 @@
 
 #include "stepper.h"
 
+#if STEPPER_ENABLE == 1
+
 volatile uint8_t timerFlag;
 volatile uint8_t msCounter;
 volatile uint8_t stepperSpeed;
@@ -27,13 +29,22 @@ static inline uint16_t angleCalc(uint16_t angle){
 //--------------------------------------------------------------------------
 
 void stepperInit(void){
-#if F_CPU == 8000000
+#if F_CPU == 8000000UL
 	// CTC mode, prescaler /256, time base 1ms, ATmega 88/168/328
 	TCCR0A |= (1<<WGM01);
 	TCCR0A |= (1<<CS02);
 	TIMSK0 |= (1<<OCIE0A);
  	OCR0A = 30;
 #endif
+
+#if F_CPU == 16000000UL
+ 	// CTC mode, prescaler /256, time base 1ms, ATmega 88/168/328
+	TCCR0A |= (1<<WGM01);
+	TCCR0A |= (1<<CS02);
+	TIMSK0 |= (1<<OCIE0A);
+ 	OCR0A = 61;
+#endif
+
 
 	// Dir out
 #if STEPPER_QUANTITY >= 1
@@ -100,12 +111,16 @@ void stepperInit(void){
 #endif
 }
 
-void stepperWriteLeft(uint8_t Stepper_number, uint8_t Angle, uint8_t Speed){
+//--------------------------------------------------------------------------
+//						 STEPPER MOVING FUNCTIONS
+//--------------------------------------------------------------------------
+
+void stepperGoLeft(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
 	stepperSpeed = Speed;
 	static uint8_t st;
-	static uint8_t stepCnt = angleCalc(Angle);
-	if(timerFlag || stepCnt){
+	static uint16_t stepCnt;
 
+	if(timerFlag && ++stepCnt <= angleCalc(Angle)){
 #if STEPPER_QUANTITY >= 1
 	switch(Stepper_number){
 	case 1:
@@ -149,10 +164,68 @@ void stepperWriteLeft(uint8_t Stepper_number, uint8_t Angle, uint8_t Speed){
 	}
 	timerFlag = 0;
   }
-}
+ }
+
+
+void stepperGoRight(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
+
+	stepperSpeed = Speed;
+	static uint8_t st;
+	static uint8_t stepCnt;
+
+	if(timerFlag && ++stepCnt <= angleCalc(Angle)){
+#if STEPPER_QUANTITY >= 1
+	switch(Stepper_number){
+	case 1:
+		if(st == 0) STEPPER1_STEP4;
+		if(st == 1) STEPPER1_STEP3;
+		if(st == 2) STEPPER1_STEP2;
+		if(st == 3) STEPPER1_STEP1;
+		if(++st > 3) st = 0;
+		break;
+#endif
+
+#if	STEPPER_QUANTITY >= 2
+	case 2:
+		if(st == 0) STEPPER2_STEP4;
+		if(st == 1) STEPPER2_STEP3;
+		if(st == 2) STEPPER2_STEP2;
+		if(st == 3) STEPPER2_STEP1;
+		if(++st > 3) st = 0;
+		break;
+#endif
+
+#if STEPPER_QUANTITY >= 3
+	case 3:
+		if(st == 0) STEPPER3_STEP4;
+		if(st == 1) STEPPER3_STEP3;
+		if(st == 2) STEPPER3_STEP2;
+		if(st == 3) STEPPER3_STEP1;
+		if(++st > 3) st = 0;
+		break;
+#endif
+
+#if STEPPER_QUANTITY >= 4
+	case 4:
+		if(st == 0) STEPPER4_STEP4;
+		if(st == 1) STEPPER4_STEP3;
+		if(st == 2) STEPPER4_STEP2;
+		if(st == 3) STEPPER4_STEP1;
+		if(++st > 3) st = 0;
+		break;
+#endif
+	}
+	timerFlag = 0;
+  }
+ }
+
+//--------------------------------------------------------------------------
+//						  ISR - time base 1ms
+//--------------------------------------------------------------------------
 ISR(TIMER0_COMPA_vect){
 	if(++msCounter > (1/stepperSpeed)){
 		timerFlag = 1;
 		msCounter = 0;
 	}
 }
+#endif

@@ -12,5 +12,13 @@
 #include "STEPPERlib/stepper.h"
 
 int main(void){
+	stepperInit();
+
+	while(1){
+		stepperGoLeft(1,30,400);
+		_delay_ms(300);
+		stepperGoRight(1,30,400);
+		_delay_ms(300);
+	}
 
 }
