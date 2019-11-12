@@ -13,7 +13,7 @@
 //--------------------------------------------------------------------------
 #define STEPPER_ENABLE     		1
 
-#define STEPPER_QUANTITY 		4   		// Max 4
+#define STEPPER_QUANTITY 		3  		// Max 4
 
 #define STEPS_PER_REV    		32  		// Depends on choosed stepper motor
 #define GEAR_RED				64 			// if none, type 1
@@ -103,9 +103,9 @@
 
 #if STEPPER_QUANTITY >= 1
 #define  STEPPER1_STEP1	PORT(STEPPER1_PORT1) |= (1<<STEPPER1_PIN1); PORT(STEPPER1_PORT1) &= ~(1<<STEPPER1_PIN1)
-#define  STEPPER1_STEP2	PORT(STEPPER1_PORT2) |= (1<<STEPPER1_PIN2); PORT(STEPPER1_PORT2) &= ~(1<<STEPPER2_PIN2)
-#define  STEPPER1_STEP3	PORT(STEPPER1_PORT3) |= (1<<STEPPER1_PIN3); PORT(STEPPER1_PORT3) &= ~(1<<STEPPER3_PIN3)
-#define  STEPPER1_STEP4	PORT(STEPPER1_PORT4) |= (1<<STEPPER1_PIN4); PORT(STEPPER1_PORT4) &= ~(1<<STEPPER4_PIN4)
+#define  STEPPER1_STEP2	PORT(STEPPER1_PORT2) |= (1<<STEPPER1_PIN2); PORT(STEPPER1_PORT2) &= ~(1<<STEPPER1_PIN2)
+#define  STEPPER1_STEP3	PORT(STEPPER1_PORT3) |= (1<<STEPPER1_PIN3); PORT(STEPPER1_PORT3) &= ~(1<<STEPPER1_PIN3)
+#define  STEPPER1_STEP4	PORT(STEPPER1_PORT4) |= (1<<STEPPER1_PIN4); PORT(STEPPER1_PORT4) &= ~(1<<STEPPER1_PIN4)
 #endif
 
 
@@ -140,8 +140,8 @@
 
 
 void stepperInit(void);
-void stepperWriteLeft(uint8_t stepper_number, uint8_t angle, uint8_t speed);
-void stepperWriteRight(uint8_t stepper_number, uint8_t angle, uint8_t speed);
+void stepperGoLeft(uint8_t stepper_number, uint8_t angle, uint8_t speed);
+void stepperGoRight(uint8_t stepper_number, uint8_t angle, uint8_t speed);
 
 
 #endif /* STEPPERLIB_STEPPER_H_ */
