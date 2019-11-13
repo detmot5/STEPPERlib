@@ -12,8 +12,8 @@
 
 #if STEPPER_ENABLE == 1
 
-volatile uint8_t timerFlag;
-volatile uint8_t msCounter;
+volatile uint8_t stepperTimerFlag;
+volatile uint8_t stepperMsCounter;
 volatile uint8_t stepperSpeed;
 
 //--------------------------------------------------------------------------
@@ -29,13 +29,15 @@ static inline uint16_t angleCalc(uint16_t angle){
 //--------------------------------------------------------------------------
 
 void stepperInit(void){
-#if F_CPU == 8000000UL
+
 	// CTC mode, prescaler /256, time base 1ms, ATmega 88/168/328
 	TCCR0A |= (1<<WGM01);
-	TCCR0A |= (1<<CS02);
-	TIMSK0 |= (1<<OCIE0A);
+	TCCR0B |= (1<<CS02);
  	OCR0A = 30;
-#endif
+	TIMSK0 |= (1<<OCIE0A);
+
+	sei();
+
 
 #if F_CPU == 16000000UL
  	// CTC mode, prescaler /256, time base 1ms, ATmega 88/168/328
@@ -118,28 +120,30 @@ void stepperInit(void){
 void stepperGoLeft(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
 	stepperSpeed = Speed;
 	static uint8_t st;
-	static uint16_t stepCnt;
 
-	if(timerFlag && ++stepCnt <= angleCalc(Angle)){
+
+	if(stepperTimerFlag){
+
 #if STEPPER_QUANTITY >= 1
-	switch(Stepper_number){
-	case 1:
-		if(st == 0) STEPPER1_STEP1;
-		if(st == 1) STEPPER1_STEP2;
-		if(st == 2) STEPPER1_STEP3;
-		if(st == 3) STEPPER1_STEP4;
-		if(++st > 3) st = 0;
-		break;
+		switch(Stepper_number){
+		case 1:
+			if(st == 0) {STEPPER1_STEP1;}
+			if(st == 1) {STEPPER1_STEP2;}
+			if(st == 2) {STEPPER1_STEP3;}
+			if(st == 3) {STEPPER1_STEP4;}
+			st++;
+			if(st > 3) st = 0;
+			break;
 #endif
 
 #if	STEPPER_QUANTITY >= 2
-	case 2:
-		if(st == 0) STEPPER2_STEP1;
-		if(st == 1) STEPPER2_STEP2;
-		if(st == 2) STEPPER2_STEP3;
-		if(st == 3) STEPPER2_STEP4;
-		if(++st > 3) st = 0;
-		break;
+		case 2:
+			if(st == 0) STEPPER2_STEP1;
+			if(st == 1) STEPPER2_STEP2;
+			if(st == 2) STEPPER2_STEP3;
+			if(st == 3) STEPPER2_STEP4;
+			if(++st > 3) st = 0;
+			break;
 #endif
 
 #if STEPPER_QUANTITY >= 3
@@ -162,7 +166,7 @@ void stepperGoLeft(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
 		break;
 #endif
 	}
-	timerFlag = 0;
+	stepperTimerFlag = 0;
   }
  }
 
@@ -171,16 +175,17 @@ void stepperGoRight(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
 
 	stepperSpeed = Speed;
 	static uint8_t st;
-	static uint8_t stepCnt;
+	uint8_t stepCnt = 0;
 
-	if(timerFlag && ++stepCnt <= angleCalc(Angle)){
+
 #if STEPPER_QUANTITY >= 1
-	switch(Stepper_number){
-	case 1:
-		if(st == 0) STEPPER1_STEP4;
-		if(st == 1) STEPPER1_STEP3;
-		if(st == 2) STEPPER1_STEP2;
-		if(st == 3) STEPPER1_STEP1;
+	while(stepperTimerFlag && stepCnt <= Angle){
+		switch(Stepper_number){
+		case 1:
+		if(st == 0) {STEPPER1_STEP1;}
+		if(st == 1) {STEPPER1_STEP2;}
+		if(st == 2) {STEPPER1_STEP3;}
+		if(st == 3) {STEPPER1_STEP4;}
 		if(++st > 3) st = 0;
 		break;
 #endif
@@ -214,18 +219,20 @@ void stepperGoRight(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
 		if(++st > 3) st = 0;
 		break;
 #endif
-	}
-	timerFlag = 0;
-  }
- }
+		stepCnt += 4;
+		stepperTimerFlag = 0;
 
+	  }
+   }
+}
 //--------------------------------------------------------------------------
 //						  ISR - time base 1ms
 //--------------------------------------------------------------------------
 ISR(TIMER0_COMPA_vect){
-	if(++msCounter > (1/stepperSpeed)){
-		timerFlag = 1;
-		msCounter = 0;
+	if(++stepperMsCounter >= stepperSpeed){
+		stepperTimerFlag = 1;
+		stepperMsCounter = 0;
 	}
+
 }
 #endif
