@@ -17,6 +17,8 @@ volatile uint8_t stepperMsCounter;
 volatile uint8_t stepperSpeed;
 
 
+
+/*
 //--------------------------------------------------------------------------
 //						CONVERSION OF DEGREES TO STEPS
 //--------------------------------------------------------------------------
@@ -31,21 +33,20 @@ static inline float speedCalc(float speed){
 	speed = (1/speed)*1000;
 	return speed;
 }
+*/
 
 //--------------------------------------------------------------------------
 //						 STEPPER INITIALIZATION
 //--------------------------------------------------------------------------
 
 void stepperInit(void){
-
+#if F_CPU == 8000000UL
 	// CTC mode, prescaler /256, time base 1ms, ATmega 88/168/328
 	TCCR0A |= (1<<WGM01);
 	TCCR0B |= (1<<CS02);
  	OCR0A = 30;
 	TIMSK0 |= (1<<OCIE0A);
-
-	sei();
-
+#endif
 
 #if F_CPU == 16000000UL
  	// CTC mode, prescaler /256, time base 1ms, ATmega 88/168/328
@@ -54,6 +55,7 @@ void stepperInit(void){
 	TIMSK0 |= (1<<OCIE0A);
  	OCR0A = 61;
 #endif
+ 	sei();
 
 
 	// Dir out
@@ -125,7 +127,7 @@ void stepperInit(void){
 //						 STEPPER MOVING FUNCTIONS
 //--------------------------------------------------------------------------
 
-void stepperGoLeft(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
+void stepperGoLeft(uint8_t Stepper_number, uint16_t Angle, float Speed){
 	stepperSpeed = Speed;
 	static uint8_t st;
 
@@ -178,32 +180,31 @@ void stepperGoLeft(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
  }
 
 
-void stepperGoRight(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
+void stepperGoRight(uint8_t stepper_number, uint16_t stepsQuantity, uint8_t stepDelay){
 
-	stepperSpeed = Speed;
+	stepperSpeed = stepDelay;
 	static uint8_t st;
 	uint16_t stepCnt = 0;
 
-
 #if STEPPER_QUANTITY >= 1
-	while(stepCnt <= Angle){
+	while(stepCnt <= stepsQuantity){
 		if(stepperTimerFlag){
-			switch(Stepper_number){
+			switch(stepper_number){
 			case 1:
 				if(st == 0) {STEPPER1_STEP1;}
 				if(st == 1) {STEPPER1_STEP2;}
 				if(st == 2) {STEPPER1_STEP3;}
 				if(st == 3) {STEPPER1_STEP4;}
 				if(++st > 3) st = 0;
-				stepCnt++;
 				break;
 #endif
 
 
-	  }
+	   }
+			stepCnt++;
 			stepperTimerFlag = 0;
-   }
-}
+    }
+  }
 }
 //--------------------------------------------------------------------------
 //						  ISR - time base 1ms

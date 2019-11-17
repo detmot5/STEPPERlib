@@ -142,12 +142,10 @@
 
 
 void stepperInit(void);
-void stepperGoLeft(uint8_t stepper_number, uint16_t Angle, uint16_t Speed);
-void stepperGoRight(uint8_t Stepper_number,uint16_t Angle, uint16_t Speed);
+void stepperGoLeft(uint8_t stepper_number, uint16_t Angle, float Speed);
+void stepperGoRight(uint8_t Stepper_number,uint16_t Angle, uint8_t Speed);
 
 
-extern volatile uint8_t stepperTimerFlag;
-extern volatile uint8_t stepperMsCounter;
-extern volatile uint8_t stepperSpeed;
+
 
 #endif /* STEPPERLIB_STEPPER_H_ */
