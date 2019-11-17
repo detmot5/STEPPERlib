@@ -24,8 +24,8 @@ int main(void){
 
 
 
-
-	stepperGoLeft(3,2048,4);
+	stepperGoRight(3,1024,3);
+	stepperGoLeft(3,1024,3);
 
 	while(1){
 
