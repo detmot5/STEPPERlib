@@ -21,11 +21,12 @@ int main(void){
 
 	stepperInit();
 
-	DDRB &= ~(1<<PB0);
-	PORTB |= (1<<PB0);
 
 
-	stepperGoRight(1,512,2);
+
+
+	stepperGoLeft(3,2048,4);
+
 	while(1){
 
 		//if(buttonPressed(BUT_TOG)){

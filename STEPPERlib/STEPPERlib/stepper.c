@@ -127,69 +127,73 @@ void stepperInit(void){
 //						 STEPPER MOVING FUNCTIONS
 //--------------------------------------------------------------------------
 
-void stepperGoLeft(uint8_t Stepper_number, uint16_t Angle, float Speed){
-	stepperSpeed = Speed;
-	static uint8_t st;
-
-
-	if(stepperTimerFlag){
-
-#if STEPPER_QUANTITY >= 1
-		switch(Stepper_number){
-		case 1:
-			if(st == 0) {STEPPER1_STEP4;}
-			if(st == 1) {STEPPER1_STEP3;}
-			if(st == 2) {STEPPER1_STEP2;}
-			if(st == 3) {STEPPER1_STEP1;}
-			if(++st > 3) st = 0;
-			break;
-#endif
-
-#if	STEPPER_QUANTITY >= 2
-		case 2:
-			if(st == 0) STEPPER2_STEP1;
-			if(st == 1) STEPPER2_STEP2;
-			if(st == 2) STEPPER2_STEP3;
-			if(st == 3) STEPPER2_STEP4;
-			if(++st > 3) st = 0;
-			break;
-#endif
-
-#if STEPPER_QUANTITY >= 3
-		case 3:
-			if(st == 0) STEPPER3_STEP1;
-			if(st == 1) STEPPER3_STEP2;
-			if(st == 2) STEPPER3_STEP3;
-			if(st == 3) STEPPER3_STEP4;
-			if(++st > 3) st = 0;
-			break;
-#endif
-
-#if STEPPER_QUANTITY >= 4
-		case 4:
-			if(st == 0) STEPPER4_STEP1;
-			if(st == 1) STEPPER4_STEP2;
-			if(st == 2) STEPPER4_STEP3;
-			if(st == 3) STEPPER4_STEP4;
-			if(++st > 3) st = 0;
-			break;
-#endif
-	}
-	stepperTimerFlag = 0;
-  }
- }
-
-
-void stepperGoRight(uint8_t stepper_number, uint16_t stepsQuantity, uint8_t stepDelay){
+void stepperGoLeft(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepDelay){
 
 	stepperSpeed = stepDelay;
 	static uint8_t st;
 	uint16_t stepCnt = 0;
 
-#if STEPPER_QUANTITY >= 1
 	while(stepCnt <= stepsQuantity){
-		if(stepperTimerFlag){
-			switch(stepper_number){
+			if(stepperTimerFlag){
+#if STEPPER_QUANTITY >= 1
+
+			switch(stepperNumber){
+			case 1:
+				if(st == 0) {STEPPER1_STEP4;}
+				if(st == 1) {STEPPER1_STEP3;}
+				if(st == 2) {STEPPER1_STEP2;}
+				if(st == 3) {STEPPER1_STEP1;}
+				if(++st > 3) st = 0;
+				break;
+#endif
+#if	STEPPER_QUANTITY >= 2
+			case 2:
+				if(st == 0) {STEPPER2_STEP4;}
+				if(st == 1) {STEPPER2_STEP3;}
+				if(st == 2) {STEPPER2_STEP2;}
+				if(st == 3) {STEPPER2_STEP1;}
+				if(++st > 3) st = 0;
+				break;
+#endif
+
+#if STEPPER_QUANTITY >= 3
+			case 3:
+				if(st == 0) {STEPPER3_STEP4;}
+				if(st == 1) {STEPPER3_STEP3;}
+				if(st == 2) {STEPPER3_STEP2;}
+				if(st == 3) {STEPPER3_STEP1;}
+				if(++st > 3) st = 0;
+				break;
+#endif
+
+#if STEPPER_QUANTITY >= 4
+			case 4:
+				if(st == 0) {STEPPER4_STEP4;}
+				if(st == 1) {STEPPER4_STEP3;}
+				if(st == 2) {STEPPER4_STEP2;}
+				if(st == 3) {STEPPER4_STEP1;}
+				if(++st > 3) st = 0;
+				break;
+#endif
+
+			}
+			stepCnt++;
+			stepperTimerFlag = 0;
+    }
+  }
+}
+
+void stepperGoRight(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepDelay){
+
+	stepperSpeed = stepDelay;
+	static uint8_t st;
+	uint16_t stepCnt = 0;
+
+	while(stepCnt <= stepsQuantity){
+			if(stepperTimerFlag){
+#if STEPPER_QUANTITY >= 1
+
+			switch(stepperNumber){
 			case 1:
 				if(st == 0) {STEPPER1_STEP1;}
 				if(st == 1) {STEPPER1_STEP2;}
@@ -198,9 +202,37 @@ void stepperGoRight(uint8_t stepper_number, uint16_t stepsQuantity, uint8_t step
 				if(++st > 3) st = 0;
 				break;
 #endif
+#if	STEPPER_QUANTITY >= 2
+			case 2:
+				if(st == 0) {STEPPER2_STEP1;}
+				if(st == 1) {STEPPER2_STEP2;}
+				if(st == 2) {STEPPER2_STEP3;}
+				if(st == 3) {STEPPER2_STEP4;}
+				if(++st > 3) st = 0;
+				break;
+#endif
 
+#if STEPPER_QUANTITY >= 3
+			case 3:
+				if(st == 0) {STEPPER3_STEP1;}
+				if(st == 1) {STEPPER3_STEP2;}
+				if(st == 2) {STEPPER3_STEP3;}
+				if(st == 3) {STEPPER3_STEP4;}
+				if(++st > 3) st = 0;
+				break;
+#endif
 
-	   }
+#if STEPPER_QUANTITY >= 4
+			case 4:
+				if(st == 0) {STEPPER4_STEP1;}
+				if(st == 1) {STEPPER4_STEP2;}
+				if(st == 2) {STEPPER4_STEP3;}
+				if(st == 3) {STEPPER4_STEP4;}
+				if(++st > 3) st = 0;
+				break;
+#endif
+
+			}
 			stepCnt++;
 			stepperTimerFlag = 0;
     }
