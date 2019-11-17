@@ -16,12 +16,20 @@ volatile uint8_t stepperTimerFlag;
 volatile uint8_t stepperMsCounter;
 volatile uint8_t stepperSpeed;
 
+
 //--------------------------------------------------------------------------
 //						CONVERSION OF DEGREES TO STEPS
 //--------------------------------------------------------------------------
 static inline uint16_t angleCalc(uint16_t angle){
 	angle = (angle*FULL_REV)/360;
 	return angle;
+}
+//--------------------------------------------------------------------------
+//					CONVERSION OF STEPS PER SECOND TO mS
+//--------------------------------------------------------------------------
+static inline float speedCalc(float speed){
+	speed = (1/speed)*1000;
+	return speed;
 }
 
 //--------------------------------------------------------------------------
@@ -127,12 +135,11 @@ void stepperGoLeft(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
 #if STEPPER_QUANTITY >= 1
 		switch(Stepper_number){
 		case 1:
-			if(st == 0) {STEPPER1_STEP1;}
-			if(st == 1) {STEPPER1_STEP2;}
-			if(st == 2) {STEPPER1_STEP3;}
-			if(st == 3) {STEPPER1_STEP4;}
-			st++;
-			if(st > 3) st = 0;
+			if(st == 0) {STEPPER1_STEP4;}
+			if(st == 1) {STEPPER1_STEP3;}
+			if(st == 2) {STEPPER1_STEP2;}
+			if(st == 3) {STEPPER1_STEP1;}
+			if(++st > 3) st = 0;
 			break;
 #endif
 
@@ -147,23 +154,23 @@ void stepperGoLeft(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
 #endif
 
 #if STEPPER_QUANTITY >= 3
-	case 3:
-		if(st == 0) STEPPER3_STEP1;
-		if(st == 1) STEPPER3_STEP2;
-		if(st == 2) STEPPER3_STEP3;
-		if(st == 3) STEPPER3_STEP4;
-		if(++st > 3) st = 0;
-		break;
+		case 3:
+			if(st == 0) STEPPER3_STEP1;
+			if(st == 1) STEPPER3_STEP2;
+			if(st == 2) STEPPER3_STEP3;
+			if(st == 3) STEPPER3_STEP4;
+			if(++st > 3) st = 0;
+			break;
 #endif
 
 #if STEPPER_QUANTITY >= 4
-	case 4:
-		if(st == 0) STEPPER4_STEP1;
-		if(st == 1) STEPPER4_STEP2;
-		if(st == 2) STEPPER4_STEP3;
-		if(st == 3) STEPPER4_STEP4;
-		if(++st > 3) st = 0;
-		break;
+		case 4:
+			if(st == 0) STEPPER4_STEP1;
+			if(st == 1) STEPPER4_STEP2;
+			if(st == 2) STEPPER4_STEP3;
+			if(st == 3) STEPPER4_STEP4;
+			if(++st > 3) st = 0;
+			break;
 #endif
 	}
 	stepperTimerFlag = 0;
@@ -175,55 +182,28 @@ void stepperGoRight(uint8_t Stepper_number, uint16_t Angle, uint16_t Speed){
 
 	stepperSpeed = Speed;
 	static uint8_t st;
-	uint8_t stepCnt = 0;
+	uint16_t stepCnt = 0;
 
 
 #if STEPPER_QUANTITY >= 1
-	while(stepperTimerFlag && stepCnt <= Angle){
-		switch(Stepper_number){
-		case 1:
-		if(st == 0) {STEPPER1_STEP1;}
-		if(st == 1) {STEPPER1_STEP2;}
-		if(st == 2) {STEPPER1_STEP3;}
-		if(st == 3) {STEPPER1_STEP4;}
-		if(++st > 3) st = 0;
-		break;
+	while(stepCnt <= Angle){
+		if(stepperTimerFlag){
+			switch(Stepper_number){
+			case 1:
+				if(st == 0) {STEPPER1_STEP1;}
+				if(st == 1) {STEPPER1_STEP2;}
+				if(st == 2) {STEPPER1_STEP3;}
+				if(st == 3) {STEPPER1_STEP4;}
+				if(++st > 3) st = 0;
+				stepCnt++;
+				break;
 #endif
 
-#if	STEPPER_QUANTITY >= 2
-	case 2:
-		if(st == 0) STEPPER2_STEP4;
-		if(st == 1) STEPPER2_STEP3;
-		if(st == 2) STEPPER2_STEP2;
-		if(st == 3) STEPPER2_STEP1;
-		if(++st > 3) st = 0;
-		break;
-#endif
-
-#if STEPPER_QUANTITY >= 3
-	case 3:
-		if(st == 0) STEPPER3_STEP4;
-		if(st == 1) STEPPER3_STEP3;
-		if(st == 2) STEPPER3_STEP2;
-		if(st == 3) STEPPER3_STEP1;
-		if(++st > 3) st = 0;
-		break;
-#endif
-
-#if STEPPER_QUANTITY >= 4
-	case 4:
-		if(st == 0) STEPPER4_STEP4;
-		if(st == 1) STEPPER4_STEP3;
-		if(st == 2) STEPPER4_STEP2;
-		if(st == 3) STEPPER4_STEP1;
-		if(++st > 3) st = 0;
-		break;
-#endif
-		stepCnt += 4;
-		stepperTimerFlag = 0;
 
 	  }
+			stepperTimerFlag = 0;
    }
+}
 }
 //--------------------------------------------------------------------------
 //						  ISR - time base 1ms

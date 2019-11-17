@@ -13,7 +13,7 @@
 //--------------------------------------------------------------------------
 #define STEPPER_ENABLE     		1
 
-#define STEPPER_QUANTITY 		4			// Max 4
+#define STEPPER_QUANTITY 		1			// Max 4
 
 #define BIPOLAR_MODE			0			// 1 - Bipolar motor, 0 - Unipolar motor
 
@@ -142,9 +142,12 @@
 
 
 void stepperInit(void);
-void stepperGoLeft(uint8_t stepper_number, uint16_t angle, uint16_t speed);
+void stepperGoLeft(uint8_t stepper_number, uint16_t Angle, uint16_t Speed);
 void stepperGoRight(uint8_t Stepper_number,uint16_t Angle, uint16_t Speed);
 
 
+extern volatile uint8_t stepperTimerFlag;
+extern volatile uint8_t stepperMsCounter;
+extern volatile uint8_t stepperSpeed;
 
 #endif /* STEPPERLIB_STEPPER_H_ */

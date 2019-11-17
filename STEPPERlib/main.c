@@ -18,14 +18,18 @@
 uint8_t buttonPressed(uint8_t button);
 
 int main(void){
+
 	stepperInit();
+	sei();
 	DDRB &= ~(1<<PB0);
 	PORTB |= (1<<PB0);
 
+
+	stepperGoRight(1,1024,3);
 	while(1){
 
 		//if(buttonPressed(BUT_TOG)){
-		stepperGoRight(1,512,3);
+
 
 
 
