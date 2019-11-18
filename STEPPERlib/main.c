@@ -17,24 +17,20 @@
 
 uint8_t buttonPressed(uint8_t button);
 
+int i;
+
 int main(void){
 
 	stepperInit();
 
-
-
-
-	stepperGoRight(3,1024,3);
-	stepperGoLeft(3,1024,3);
-
 	while(1){
 
-		//if(buttonPressed(BUT_TOG)){
+		while(!i){
+		stepperGoRight(3,512,3);
+		stepperGoLeft(3,2048,3);
+		i = 1;
+		}
 
-
-
-
-	//}
   }
 }
 

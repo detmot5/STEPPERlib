@@ -18,17 +18,17 @@ volatile uint8_t stepperSpeed;
 
 
 
-/*
 //--------------------------------------------------------------------------
 //						CONVERSION OF DEGREES TO STEPS
 //--------------------------------------------------------------------------
-static inline uint16_t angleCalc(uint16_t angle){
+/*static inline uint16_t angleCalc(uint16_t angle){
 	angle = (angle*FULL_REV)/360;
 	return angle;
-}
+}*/
 //--------------------------------------------------------------------------
 //					CONVERSION OF STEPS PER SECOND TO mS
 //--------------------------------------------------------------------------
+/*
 static inline float speedCalc(float speed){
 	speed = (1/speed)*1000;
 	return speed;
@@ -176,6 +176,7 @@ void stepperGoLeft(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepDe
 				break;
 #endif
 
+
 			}
 			stepCnt++;
 			stepperTimerFlag = 0;
@@ -238,6 +239,24 @@ void stepperGoRight(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepD
     }
   }
 }
+
+void robotStepperGo(stepperRobotDir dir, uint8_t stepsQuantity, uint8_t stepDelay){
+	stepperSpeed = stepDelay;
+	static uint8_t st;
+	uint16_t stepCnt = 0;
+
+	if(dir == stepperFW){
+
+	}
+
+	if(dir == stepperRW){
+
+	}
+
+}
+
+
+
 //--------------------------------------------------------------------------
 //						  ISR - time base 1ms
 //--------------------------------------------------------------------------

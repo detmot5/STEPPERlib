@@ -17,6 +17,8 @@
 
 #define BIPOLAR_MODE			0			// 1 - Bipolar motor, 0 - Unipolar motor
 
+#define USE_ROBOT_FUNC          1			// Using robot functions (go forward or backward)
+
 #define STEPS_PER_REV    		32  		// Depends on choosed stepper motor
 #define GEAR_RED				64 			// if none, type 1
 #define FULL_REV	STEPS_PER_REV * GEAR_RED
@@ -138,15 +140,18 @@
 //						DECLARATIONS OF FUNCTIONS AND VARIABLES
 //--------------------------------------------------------------------------
 
-
-
+typedef enum {stepperLeft, stepperRight}stepperDir;
 
 void stepperInit(void);
 void stepperGoLeft(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepDelay);
 void stepperGoRight(uint8_t stepperNumber,uint16_t stepsQuantity, uint8_t stepDelay);
-void robotStepperFW();
-void robotStepperRW();
 
+
+// 						    ROBOT CONTROL TYPES AND FUNCTIONS
+
+typedef enum {stepperRW, stepperFW}stepperRobotDir;				// FW - Forward RW - Reverse
+
+void robotStepperGo(stepperRobotDir dir, uint8_t stepsQuantity, uint8_t stepDelay);
 
 
 #endif /* STEPPERLIB_STEPPER_H_ */
