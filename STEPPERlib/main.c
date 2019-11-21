@@ -26,9 +26,11 @@ int main(void){
 
 	stepperInit();
 
+
 	while(1){
 		if(!i){
 			stepperGoLeft(1, 1024, 4);
+			stepperGoRight(1,1024,4);
 			i=1;
 		}
   }
