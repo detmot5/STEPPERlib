@@ -16,6 +16,8 @@ volatile uint8_t stepperTimerFlag;
 volatile uint8_t stepperMsCounter;
 volatile uint8_t stepperSpeed;
 
+uint8_t stepperStopFlag = 1;
+
 
 
 //--------------------------------------------------------------------------
@@ -186,6 +188,7 @@ void stepperGoLeft(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepDe
 
 void stepperGoRight(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepDelay){
 
+
 	stepperSpeed = stepDelay;
 	static uint8_t st;
 	uint16_t stepCnt = 0;
@@ -240,21 +243,83 @@ void stepperGoRight(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepD
   }
 }
 
-void robotStepperGo(stepperRobotDir dir, uint8_t stepsQuantity, uint8_t stepDelay){
+#if USE_ROBOT_FUNC == 1 && STEPPER_QUANTITY == 4
+
+void robotStepperGo(_stepperRobotDir dir, uint8_t stepsQuantity, uint8_t stepDelay){
+
 	stepperSpeed = stepDelay;
 	static uint8_t st;
 	uint16_t stepCnt = 0;
 
-	if(dir == stepperFW){
+	while(stepCnt <= stepsQuantity){
+		if(stepperTimerFlag){
 
+			if(dir == stepperFW){
+
+				// Stepper1 and Stepper2 - Left motors, Rotate right
+				// Stepper3 and Stepper4 - Right motors - Rotate left
+
+				if(st == 0) {
+					STEPPER1_STEP1;
+					STEPPER2_STEP1;
+					STEPPER3_STEP4;
+					STEPPER4_STEP4;
+				}
+				if(st == 1) {
+					STEPPER1_STEP2;
+					STEPPER2_STEP2;
+					STEPPER3_STEP3;
+					STEPPER4_STEP3;
+				}
+				if(st == 2) {
+					STEPPER1_STEP3;
+					STEPPER2_STEP3;
+					STEPPER3_STEP2;
+					STEPPER4_STEP2;
+				}
+				if(st == 3) {
+					STEPPER1_STEP4;
+					STEPPER2_STEP4;
+					STEPPER3_STEP1;
+					STEPPER4_STEP1;
+				}
+				if(++st > 3) st = 0;
+			}
+
+			if(dir == stepperRW){
+
+				if(st == 0) {
+					STEPPER3_STEP1;
+					STEPPER4_STEP1;
+					STEPPER1_STEP4;
+					STEPPER2_STEP4;
+				}
+				if(st == 1) {
+					STEPPER3_STEP2;
+					STEPPER4_STEP2;
+					STEPPER1_STEP3;
+					STEPPER2_STEP3;
+				}
+				if(st == 2) {
+					STEPPER3_STEP3;
+					STEPPER4_STEP3;
+					STEPPER1_STEP2;
+					STEPPER2_STEP2;
+				}
+				if(st == 3) {
+					STEPPER3_STEP4;
+					STEPPER4_STEP4;
+					STEPPER1_STEP1;
+					STEPPER2_STEP1;
+				}
+				if(++st > 3) st = 0;
+			}
+			stepCnt++;
+			stepperTimerFlag = 0;
+		}
 	}
-
-	if(dir == stepperRW){
-
-	}
-
 }
-
+#endif
 
 
 //--------------------------------------------------------------------------

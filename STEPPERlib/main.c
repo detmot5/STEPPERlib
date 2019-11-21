@@ -17,6 +17,9 @@
 
 uint8_t buttonPressed(uint8_t button);
 
+int speed;
+int angle;
+
 int i;
 
 int main(void){
@@ -24,13 +27,10 @@ int main(void){
 	stepperInit();
 
 	while(1){
-
-		while(!i){
-		stepperGoRight(3,512,3);
-		stepperGoLeft(3,2048,3);
-		i = 1;
+		if(!i){
+			stepperGoLeft(1, 1024, 4);
+			i=1;
 		}
-
   }
 }
 
