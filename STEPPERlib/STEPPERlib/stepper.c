@@ -10,11 +10,13 @@
 
 #include "stepper.h"
 
-#if STEPPER_ENABLE == 1
+#if _STEPPER_ENABLE == 1
 
 volatile static uint8_t stepperTimerFlag;
 volatile static uint8_t stepperMsCounter;
 volatile static uint8_t stepperSpeed;
+
+uint8_t stepperEmergencyFlag;
 
 #if USE_ROBOT_FUNC == 1
 uint8_t _stepperStopFlag = 1;
@@ -62,7 +64,7 @@ void stepperInit(void){
 
 
 	// Dir out
-#if STEPPER_QUANTITY >= 1
+#if _STEPPER_QUANTITY >= 1
 	DDR(_STEPPER1_PORT1) |= (1<<_STEPPER1_PIN1);
 	DDR(_STEPPER1_PORT2) |= (1<<_STEPPER1_PIN2);
 	DDR(_STEPPER1_PORT3) |= (1<<_STEPPER1_PIN3);
@@ -70,7 +72,7 @@ void stepperInit(void){
 #endif
 
 
-#if STEPPER_QUANTITY >= 2
+#if _STEPPER_QUANTITY >= 2
 	DDR(_STEPPER2_PORT1) |= (1<<_STEPPER2_PIN1);
 	DDR(_STEPPER2_PORT2) |= (1<<_STEPPER2_PIN2);
 	DDR(_STEPPER2_PORT3) |= (1<<_STEPPER2_PIN3);
@@ -78,7 +80,7 @@ void stepperInit(void){
 #endif
 
 
-#if STEPPER_QUANTITY >= 3
+#if _STEPPER_QUANTITY >= 3
 	DDR(_STEPPER3_PORT1) |= (1<<_STEPPER3_PIN1);
 	DDR(_STEPPER3_PORT2) |= (1<<_STEPPER3_PIN2);
 	DDR(_STEPPER3_PORT3) |= (1<<_STEPPER3_PIN3);
@@ -86,7 +88,7 @@ void stepperInit(void){
 #endif
 
 
-#if STEPPER_QUANTITY >= 4
+#if _STEPPER_QUANTITY >= 4
 	DDR(_STEPPER4_PORT1) |= (1<<_STEPPER4_PIN1);
 	DDR(_STEPPER4_PORT2) |= (1<<_STEPPER4_PIN2);
 	DDR(_STEPPER4_PORT3) |= (1<<_STEPPER4_PIN3);
@@ -94,7 +96,7 @@ void stepperInit(void){
 #endif
 
 	// Putting stepper pins low
-#if STEPPER_QUANTITY >= 1
+#if _STEPPER_QUANTITY >= 1
 	PORT(_STEPPER1_PORT1) &= ~(1<<_STEPPER1_PIN1);
 	PORT(_STEPPER1_PORT2) &= ~(1<<_STEPPER1_PIN2);
 	PORT(_STEPPER1_PORT3) &= ~(1<<_STEPPER1_PIN3);
@@ -102,7 +104,7 @@ void stepperInit(void){
 #endif
 
 
-#if STEPPER_QUANTITY >= 2
+#if _STEPPER_QUANTITY >= 2
 	PORT(_STEPPER2_PORT1) &= ~(1<<_STEPPER2_PIN1);
 	PORT(_STEPPER2_PORT2) &= ~(1<<_STEPPER2_PIN2);
 	PORT(_STEPPER2_PORT3) &= ~(1<<_STEPPER2_PIN3);
@@ -110,7 +112,7 @@ void stepperInit(void){
 #endif
 
 
-#if STEPPER_QUANTITY >= 3
+#if _STEPPER_QUANTITY >= 3
 	PORT(_STEPPER3_PORT1) &= ~(1<<_STEPPER3_PIN1);
 	PORT(_STEPPER3_PORT2) &= ~(1<<_STEPPER3_PIN2);
 	PORT(_STEPPER3_PORT3) &= ~(1<<_STEPPER3_PIN3);
@@ -118,7 +120,7 @@ void stepperInit(void){
 #endif
 
 
-#if STEPPER_QUANTITY >= 4
+#if _STEPPER_QUANTITY >= 4
 	PORT(_STEPPER4_PORT1) &= ~(1<<_STEPPER4_PIN1);
 	PORT(_STEPPER4_PORT2) &= ~(1<<_STEPPER4_PIN2);
 	PORT(_STEPPER4_PORT3) &= ~(1<<_STEPPER4_PIN3);
@@ -138,43 +140,43 @@ void stepperGoLeft(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepDe
 
 	while(stepCnt <= stepsQuantity){
 			if(stepperTimerFlag){
-#if STEPPER_QUANTITY >= 1
+#if _STEPPER_QUANTITY >= 1
 
 			switch(stepperNumber){
 			case 1:
-				if(st == 0) {STEPPER1_STEP4;}
-				if(st == 1) {STEPPER1_STEP3;}
-				if(st == 2) {STEPPER1_STEP2;}
-				if(st == 3) {STEPPER1_STEP1;}
+				if(st == 0) {_STEPPER1_STEP4;}
+				if(st == 1) {_STEPPER1_STEP3;}
+				if(st == 2) {_STEPPER1_STEP2;}
+				if(st == 3) {_STEPPER1_STEP1;}
 				if(++st > 3) st = 0;
 				break;
 #endif
-#if	STEPPER_QUANTITY >= 2
+#if	_STEPPER_QUANTITY >= 2
 			case 2:
-				if(st == 0) {STEPPER2_STEP4;}
-				if(st == 1) {STEPPER2_STEP3;}
-				if(st == 2) {STEPPER2_STEP2;}
-				if(st == 3) {STEPPER2_STEP1;}
+				if(st == 0) {_STEPPER2_STEP4;}
+				if(st == 1) {_STEPPER2_STEP3;}
+				if(st == 2) {_STEPPER2_STEP2;}
+				if(st == 3) {_STEPPER2_STEP1;}
 				if(++st > 3) st = 0;
 				break;
 #endif
 
-#if STEPPER_QUANTITY >= 3
+#if _STEPPER_QUANTITY >= 3
 			case 3:
-				if(st == 0) {STEPPER3_STEP4;}
-				if(st == 1) {STEPPER3_STEP3;}
-				if(st == 2) {STEPPER3_STEP2;}
-				if(st == 3) {STEPPER3_STEP1;}
+				if(st == 0) {_STEPPER3_STEP4;}
+				if(st == 1) {_STEPPER3_STEP3;}
+				if(st == 2) {_STEPPER3_STEP2;}
+				if(st == 3) {_STEPPER3_STEP1;}
 				if(++st > 3) st = 0;
 				break;
 #endif
 
-#if STEPPER_QUANTITY >= 4
+#if _STEPPER_QUANTITY >= 4
 			case 4:
-				if(st == 0) {STEPPER4_STEP4;}
-				if(st == 1) {STEPPER4_STEP3;}
-				if(st == 2) {STEPPER4_STEP2;}
-				if(st == 3) {STEPPER4_STEP1;}
+				if(st == 0) {_STEPPER4_STEP4;}
+				if(st == 1) {_STEPPER4_STEP3;}
+				if(st == 2) {_STEPPER4_STEP2;}
+				if(st == 3) {_STEPPER4_STEP1;}
 				if(++st > 3) st = 0;
 				break;
 #endif
@@ -194,45 +196,45 @@ void stepperGoRight(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepD
 	static uint8_t st;
 	uint16_t stepCnt = 0;
 
-	while(stepCnt <= stepsQuantity){
+	while(stepCnt <= stepsQuantity && !stepperEmergencyFlag){
 			if(stepperTimerFlag){
-#if STEPPER_QUANTITY >= 1
+#if _STEPPER_QUANTITY >= 1
 
 			switch(stepperNumber){
 			case 1:
-				if(st == 0) {STEPPER1_STEP1;}
-				if(st == 1) {STEPPER1_STEP2;}
-				if(st == 2) {STEPPER1_STEP3;}
-				if(st == 3) {STEPPER1_STEP4;}
+				if(st == 0) {_STEPPER1_STEP1;}
+				if(st == 1) {_STEPPER1_STEP2;}
+				if(st == 2) {_STEPPER1_STEP3;}
+				if(st == 3) {_STEPPER1_STEP4;}
 				if(++st > 3) st = 0;
 				break;
 #endif
-#if	STEPPER_QUANTITY >= 2
+#if	_STEPPER_QUANTITY >= 2
 			case 2:
-				if(st == 0) {STEPPER2_STEP1;}
-				if(st == 1) {STEPPER2_STEP2;}
-				if(st == 2) {STEPPER2_STEP3;}
-				if(st == 3) {STEPPER2_STEP4;}
+				if(st == 0) {_STEPPER2_STEP1;}
+				if(st == 1) {_STEPPER2_STEP2;}
+				if(st == 2) {_STEPPER2_STEP3;}
+				if(st == 3) {_STEPPER2_STEP4;}
 				if(++st > 3) st = 0;
 				break;
 #endif
 
-#if STEPPER_QUANTITY >= 3
+#if _STEPPER_QUANTITY >= 3
 			case 3:
-				if(st == 0) {STEPPER3_STEP1;}
-				if(st == 1) {STEPPER3_STEP2;}
-				if(st == 2) {STEPPER3_STEP3;}
-				if(st == 3) {STEPPER3_STEP4;}
+				if(st == 0) {_STEPPER3_STEP1;}
+				if(st == 1) {_STEPPER3_STEP2;}
+				if(st == 2) {_STEPPER3_STEP3;}
+				if(st == 3) {_STEPPER3_STEP4;}
 				if(++st > 3) st = 0;
 				break;
 #endif
 
-#if STEPPER_QUANTITY >= 4
+#if _STEPPER_QUANTITY >= 4
 			case 4:
-				if(st == 0) {STEPPER4_STEP1;}
-				if(st == 1) {STEPPER4_STEP2;}
-				if(st == 2) {STEPPER4_STEP3;}
-				if(st == 3) {STEPPER4_STEP4;}
+				if(st == 0) {_STEPPER4_STEP1;}
+				if(st == 1) {_STEPPER4_STEP2;}
+				if(st == 2) {_STEPPER4_STEP3;}
+				if(st == 3) {_STEPPER4_STEP4;}
 				if(++st > 3) st = 0;
 				break;
 #endif
@@ -244,9 +246,9 @@ void stepperGoRight(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepD
   }
 }
 
-#if USE_ROBOT_FUNC == 1 && STEPPER_QUANTITY == 4
+#if _USE_ROBOT_FUNC == 1 && _STEPPER_QUANTITY == 4
 
-void robotStepperGo(_stepperRobotDir dir, uint8_t stepsQuantity, uint8_t stepDelay){
+void robotStepperGo(_stepperRobotDir dir, uint16_t stepsQuantity, uint8_t stepDelay){
 
 	stepperSpeed = stepDelay;
 	static uint8_t st;
@@ -255,63 +257,66 @@ void robotStepperGo(_stepperRobotDir dir, uint8_t stepsQuantity, uint8_t stepDel
 	while(stepCnt <= stepsQuantity){
 		if(stepperTimerFlag){
 
-			if(dir == stepperFW){
+			if(dir == stFW){
 
 				// Stepper1 and Stepper2 - Left motors, Rotate right
 				// Stepper3 and Stepper4 - Right motors - Rotate left
 
+				// Stepper1 and Stepper3 - Front motors
+				// Stepper2 and Stepper4 - Rear motors
+
 				if(st == 0) {
-					STEPPER1_STEP1;
-					STEPPER2_STEP1;
-					STEPPER3_STEP4;
-					STEPPER4_STEP4;
+					_STEPPER1_STEP1;
+					_STEPPER2_STEP1;
+					_STEPPER3_STEP4;
+					_STEPPER4_STEP4;
 				}
 				if(st == 1) {
-					STEPPER1_STEP2;
-					STEPPER2_STEP2;
-					STEPPER3_STEP3;
-					STEPPER4_STEP3;
+					_STEPPER1_STEP2;
+					_STEPPER2_STEP2;
+					_STEPPER3_STEP3;
+					_STEPPER4_STEP3;
 				}
 				if(st == 2) {
-					STEPPER1_STEP3;
-					STEPPER2_STEP3;
-					STEPPER3_STEP2;
-					STEPPER4_STEP2;
+					_STEPPER1_STEP3;
+					_STEPPER2_STEP3;
+					_STEPPER3_STEP2;
+					_STEPPER4_STEP2;
 				}
 				if(st == 3) {
-					STEPPER1_STEP4;
-					STEPPER2_STEP4;
-					STEPPER3_STEP1;
-					STEPPER4_STEP1;
+					_STEPPER1_STEP4;
+					_STEPPER2_STEP4;
+					_STEPPER3_STEP1;
+					_STEPPER4_STEP1;
 				}
 				if(++st > 3) st = 0;
 			}
 
-			if(dir == stepperRW){
+			if(dir == stRW){
 
 				if(st == 0) {
-					STEPPER3_STEP1;
-					STEPPER4_STEP1;
-					STEPPER1_STEP4;
-					STEPPER2_STEP4;
+					_STEPPER3_STEP1;
+					_STEPPER4_STEP1;
+					_STEPPER1_STEP4;
+					_STEPPER2_STEP4;
 				}
 				if(st == 1) {
-					STEPPER3_STEP2;
-					STEPPER4_STEP2;
-					STEPPER1_STEP3;
-					STEPPER2_STEP3;
+					_STEPPER3_STEP2;
+					_STEPPER4_STEP2;
+					_STEPPER1_STEP3;
+					_STEPPER2_STEP3;
 				}
 				if(st == 2) {
-					STEPPER3_STEP3;
-					STEPPER4_STEP3;
-					STEPPER1_STEP2;
-					STEPPER2_STEP2;
+					_STEPPER3_STEP3;
+					_STEPPER4_STEP3;
+					_STEPPER1_STEP2;
+					_STEPPER2_STEP2;
 				}
 				if(st == 3) {
-					STEPPER3_STEP4;
-					STEPPER4_STEP4;
-					STEPPER1_STEP1;
-					STEPPER2_STEP1;
+					_STEPPER3_STEP4;
+					_STEPPER4_STEP4;
+					_STEPPER1_STEP1;
+					_STEPPER2_STEP1;
 				}
 				if(++st > 3) st = 0;
 			}
@@ -320,6 +325,9 @@ void robotStepperGo(_stepperRobotDir dir, uint8_t stepsQuantity, uint8_t stepDel
 		}
 	}
 }
+
+
+
 #endif
 
 
