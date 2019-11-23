@@ -43,6 +43,7 @@ uint8_t buttonPressed(uint8_t button);
 
 
 int main(void){
+/*
 
 	stepperInit();
 	DDRD &= ~(1<<PD0);
@@ -55,13 +56,14 @@ int main(void){
 		if(buttonPressed(BUT_TOG)) stepperEmergencyFlag = 1; 	//when button pressed - stepper stops
 		else stepperEmergencyFlag = 0;							//when buttol pulled - stepper starts
 
-  }
-}
 
+  }*/
+}
+/*
 uint8_t buttonPressed(uint8_t button){
 	if(!button){
 		_delay_ms(20);
 		if(!button) return 1;
 	}
 	return 0;
-}
+}*/

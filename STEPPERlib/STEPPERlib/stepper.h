@@ -21,6 +21,7 @@
  *	Stepper1 and Stepper2 are left motors
  *	Stepper3 and Stepper4 are right motors
  *
+ * Library takes from ~500 to 1500~ bytes of flash (depends on the settings)
  *
  * Using in own projects and modyfiying is fully allowed.
  *
@@ -39,11 +40,11 @@
 //--------------------------------------------------------------------------
 #define _STEPPER_ENABLE     	1
 
-#define _STEPPER_QUANTITY 		4			// Max 4
+#define _STEPPER_QUANTITY 		1			// Max 4
 
 #define _BIPOLAR_MODE			0			// 1 - Bipolar motor, 0 - Unipolar motor (coming soon)
 
-#define _USE_ROBOT_FUNC         1			// Using robot functions (go forward or backward)
+#define _USE_ROBOT_FUNC         0			// Using robot functions (go forward or backward)
 
 #define _STEPS_PER_REV    		32  		// Depends on choosed stepper motor
 #define _GEAR_RED				64 			// if none, type 1
