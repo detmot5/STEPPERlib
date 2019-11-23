@@ -9,7 +9,9 @@ Microcontroler used in project - ATmega328p (old AVR's needs change timer settin
 Function list:
  
 >stepperInit - Initialization of timers, output pins etc.	Must be called before use any other function.
+
 >stepperGoLeft - Choosen motor is moving left for a given quantity of steps and delay between them
+
 >stepperGoRight - Choosen motor is moving right for a given quantity of steps and delay between them
  
 Lib has also function for drive robot's wheels (can be switched off below):
