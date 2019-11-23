@@ -12,18 +12,21 @@
  *	stepperGoLeft - Choosen motor is moving left for a given quantity of steps and delay between them
  *	stepperGoRight - Choosen motor is moving right for a given quantity of steps and delay between them
  *
- *	Lib has also function for drive robot's wheels (can be switched off below)
+ *	Lib has also function for drive robot's wheels (can be switched off below):
+ *
+ *	robotStepperGo - drive a robot for a given distance quantity of steps and delay  between them
+ *
  *	Stepper1 and Stepper3 are front motors
  *	Stepper2 and Stepper3 are rear motors
  *	Stepper1 and Stepper2 are left motors
  *	Stepper3 and Stepper4 are right motors
  *
  *
- *
  * Using in own projects and modyfiying is fully allowed.
+ * Example implementation below.
  *
  * Author: Norbert Bielak
- * Created: 8 Nov 2019
+ * Created: 23 Nov 2019
  *
  * main.c
 */
@@ -34,19 +37,24 @@
 
 #include "STEPPERlib/stepper.h"
 
-#define BUT_TOG (PINB & (1<<PB0))
+#define BUT_TOG (PIND & (1<<PD0))
 
 uint8_t buttonPressed(uint8_t button);
-int i = 40;
+
 
 int main(void){
 
 	stepperInit();
-	DDRD |= (1<<PD0);
+	DDRD &= ~(1<<PD0);
+	PORTD |= (1<<PD0);
 
 	while(1){
-		robotStepperGo(stFW,10,i--);
-		if(i==2) i = 10;
+		//stepper2, 90dg agnle, 3ms step delay
+		stepperGoRight(2, FULL_REV/4, 3);
+		stepperGoLeft(2, FULL_REV/4, 3);
+		if(buttonPressed(BUT_TOG)) stepperEmergencyFlag = 1; 	//when button pressed - stepper stops
+		else stepperEmergencyFlag = 0;							//when buttol pulled - stepper starts
+
   }
 }
 

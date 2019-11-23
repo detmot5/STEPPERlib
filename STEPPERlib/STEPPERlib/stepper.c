@@ -16,11 +16,7 @@ volatile static uint8_t stepperTimerFlag;
 volatile static uint8_t stepperMsCounter;
 volatile static uint8_t stepperSpeed;
 
-uint8_t stepperEmergencyFlag;
-
-#if USE_ROBOT_FUNC == 1
-uint8_t _stepperStopFlag = 1;
-#endif
+uint8_t stepperEmergencyFlag = 0;			// 1 - emergency stop (for example: too small distance from an obstacle
 
 
 //--------------------------------------------------------------------------
@@ -138,7 +134,7 @@ void stepperGoLeft(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepDe
 	static uint8_t st;
 	uint16_t stepCnt = 0;
 
-	while(stepCnt <= stepsQuantity){
+	while(stepCnt <= stepsQuantity && !stepperEmergencyFlag){
 			if(stepperTimerFlag){
 #if _STEPPER_QUANTITY >= 1
 
@@ -197,7 +193,7 @@ void stepperGoRight(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepD
 	uint16_t stepCnt = 0;
 
 	while(stepCnt <= stepsQuantity && !stepperEmergencyFlag){
-			if(stepperTimerFlag){
+			if(stepperTimerFlag ){
 #if _STEPPER_QUANTITY >= 1
 
 			switch(stepperNumber){
