@@ -14,7 +14,7 @@ Function list:
 
 >stepperGoRight - Choosen motor is moving right for a given quantity of steps and delay between them
  
-Lib has also function for drive robot's wheels (can be switched off below):
+Lib has also function for drive robot's wheels (can be switched off):
  
 >robotStepperGo - drive a robot for a given distance quantity of steps and delay  between them
 
