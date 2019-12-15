@@ -40,7 +40,7 @@
 //--------------------------------------------------------------------------
 #define _STEPPER_ENABLE     	1
 
-#define _STEPPER_QUANTITY 		1			// Max 4
+#define _STEPPER_QUANTITY 		4			// Max 4
 
 #define _BIPOLAR_MODE			0			// 1 - Bipolar motor, 0 - Unipolar motor (coming soon)
 

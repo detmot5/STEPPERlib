@@ -37,13 +37,8 @@
 
 #include "STEPPERlib/stepper.h"
 
-#define BUT_TOG (PIND & (1<<PD0))
-
-uint8_t buttonPressed(uint8_t button);
-
 
 int main(void){
-/*
 
 	stepperInit();
 	DDRD &= ~(1<<PD0);
@@ -51,19 +46,10 @@ int main(void){
 
 	while(1){
 		//stepper2, 90dg agnle, 3ms step delay
-		stepperGoRight(2, FULL_REV/4, 3);
-		stepperGoLeft(2, FULL_REV/4, 3);
-		if(buttonPressed(BUT_TOG)) stepperEmergencyFlag = 1; 	//when button pressed - stepper stops
-		else stepperEmergencyFlag = 0;							//when buttol pulled - stepper starts
+		stepperGoRight(3, FULL_REV/4, 3);
+		stepperGoLeft(3, FULL_REV/4, 3);
 
 
-  }*/
+  }
+
 }
-/*
-uint8_t buttonPressed(uint8_t button){
-	if(!button){
-		_delay_ms(20);
-		if(!button) return 1;
-	}
-	return 0;
-}*/

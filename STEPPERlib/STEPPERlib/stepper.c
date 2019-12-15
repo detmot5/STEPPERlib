@@ -139,42 +139,42 @@ void stepperGoLeft(uint8_t stepperNumber, uint16_t stepsQuantity, uint8_t stepDe
 #if _STEPPER_QUANTITY >= 1
 
 			switch(stepperNumber){
-			case 1:
-				if(st == 0) {_STEPPER1_STEP4;}
-				if(st == 1) {_STEPPER1_STEP3;}
-				if(st == 2) {_STEPPER1_STEP2;}
-				if(st == 3) {_STEPPER1_STEP1;}
-				if(++st > 3) st = 0;
-				break;
+				case 1:
+					if(st == 0) {_STEPPER1_STEP4;}
+					if(st == 1) {_STEPPER1_STEP3;}
+					if(st == 2) {_STEPPER1_STEP2;}
+					if(st == 3) {_STEPPER1_STEP1;}
+					if(++st > 3) st = 0;
+					break;
 #endif
 #if	_STEPPER_QUANTITY >= 2
-			case 2:
-				if(st == 0) {_STEPPER2_STEP4;}
-				if(st == 1) {_STEPPER2_STEP3;}
-				if(st == 2) {_STEPPER2_STEP2;}
-				if(st == 3) {_STEPPER2_STEP1;}
-				if(++st > 3) st = 0;
-				break;
+				case 2:
+					if(st == 0) {_STEPPER2_STEP4;}
+					if(st == 1) {_STEPPER2_STEP3;}
+					if(st == 2) {_STEPPER2_STEP2;}
+					if(st == 3) {_STEPPER2_STEP1;}
+					if(++st > 3) st = 0;
+					break;
 #endif
 
 #if _STEPPER_QUANTITY >= 3
-			case 3:
-				if(st == 0) {_STEPPER3_STEP4;}
-				if(st == 1) {_STEPPER3_STEP3;}
-				if(st == 2) {_STEPPER3_STEP2;}
-				if(st == 3) {_STEPPER3_STEP1;}
-				if(++st > 3) st = 0;
-				break;
+				case 3:
+					if(st == 0) {_STEPPER3_STEP4;}
+					if(st == 1) {_STEPPER3_STEP3;}
+					if(st == 2) {_STEPPER3_STEP2;}
+					if(st == 3) {_STEPPER3_STEP1;}
+					if(++st > 3) st = 0;
+					break;
 #endif
 
 #if _STEPPER_QUANTITY >= 4
-			case 4:
-				if(st == 0) {_STEPPER4_STEP4;}
-				if(st == 1) {_STEPPER4_STEP3;}
-				if(st == 2) {_STEPPER4_STEP2;}
-				if(st == 3) {_STEPPER4_STEP1;}
-				if(++st > 3) st = 0;
-				break;
+				case 4:
+					if(st == 0) {_STEPPER4_STEP4;}
+					if(st == 1) {_STEPPER4_STEP3;}
+					if(st == 2) {_STEPPER4_STEP2;}
+					if(st == 3) {_STEPPER4_STEP1;}
+					if(++st > 3) st = 0;
+					break;
 #endif
 
 
