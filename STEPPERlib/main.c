@@ -43,7 +43,7 @@ int main(void){
 	stepperInit();
 	DDRD &= ~(1<<PD0);
 	PORTD |= (1<<PD0);
-
+//s
 	while(1){
 		//stepper2, 90dg agnle, 3ms step delay
 		stepperGoRight(3, FULL_REV/4, 3);
