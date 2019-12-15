@@ -19,22 +19,7 @@ volatile static uint8_t stepperSpeed;
 uint8_t stepperEmergencyFlag = 0;			// 1 - emergency stop (for example: too small distance from an obstacle
 
 
-//--------------------------------------------------------------------------
-//						CONVERSION OF DEGREES TO STEPS
-//--------------------------------------------------------------------------
-/*static inline uint16_t angleCalc(uint16_t angle){
-	angle = (angle*FULL_REV)/360;
-	return angle;
-}*/
-//--------------------------------------------------------------------------
-//					CONVERSION OF STEPS PER SECOND TO mS
-//--------------------------------------------------------------------------
-/*
-static inline float speedCalc(float speed){
-	speed = (1/speed)*1000;
-	return speed;
-}
-*/
+
 
 //--------------------------------------------------------------------------
 //						 STEPPER INITIALIZATION
