@@ -1,6 +1,6 @@
 Library for control the ULN2003 stepper motor driver using AVR uC
 
-Up to 4 motors can be used
+Up to 4 motors can be driven
 
 Supported F_CPU - 16MHz and 8Mhz
  
