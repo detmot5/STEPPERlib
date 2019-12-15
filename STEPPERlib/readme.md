@@ -13,18 +13,23 @@ Function list:
 >stepperGoLeft - Choosen motor is moving left for a given quantity of steps and delay between them
 
 >stepperGoRight - Choosen motor is moving right for a given quantity of steps and delay between them
+
  
 Lib has also function for drive robot's wheels (can be switched off):
  
 >robotStepperGo - drive a robot for a given distance quantity of steps and delay  between them
 
-Stepper1 and Stepper3 are front motors
-Stepper2 and Stepper3 are rear motors
-Stepper1 and Stepper2 are left motors
-Stepper3 and Stepper4 are right motors
+  Stepper1 and Stepper3 are front motors
+  
+  Stepper2 and Stepper3 are rear motors
+  
+  Stepper1 and Stepper2 are left motors
+  
+  Stepper3 and Stepper4 are right motors
   
  
-Using in own projects and modyfiying is fully allowed.
+>Using in own projects and modyfiying is fully allowed.
  
- Author: Norbert Bielak
- Created: 23 Nov 2019
+ >Author: Norbert Bielak
+ 
+ >Created: 23 Nov 2019
