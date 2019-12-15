@@ -31,4 +31,5 @@ Lib has also function for drive robot's wheels (can be switched off):
 >Using in own projects and modyfiying is fully allowed.
  
  >Author: Norbert Bielak
+ 
  >Created: 23 Nov 2019
