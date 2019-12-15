@@ -19,8 +19,11 @@ Lib has also function for drive robot's wheels (can be switched off):
 >robotStepperGo - drive a robot for a given distance quantity of steps and delay  between them
 
   Stepper1 and Stepper3 are front motors
+  
   Stepper2 and Stepper3 are rear motors
+  
   Stepper1 and Stepper2 are left motors
+  
   Stepper3 and Stepper4 are right motors
   
  
